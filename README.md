@@ -1,4 +1,3 @@
-flying-toasters
-===============
+# notifyr
 
 jquery notification plugin
