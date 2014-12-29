@@ -1,0 +1,29 @@
+{
+  "name": "notifyr",
+  "version": "0.0.1",
+  "description": "jquery notification plugin",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/okize/notifyr"
+  },
+  "keywords": [
+    "jquery",
+    "plugin",
+    "notify",
+    "notification"
+  ],
+  "author": "Morgan Wigmanich",
+  "license": "MIT",
+  "bugs": "https://github.com/okize/notifyr/issues",
+  "homepage": "https://github.com/okize/notifyr/",
+  "author": {
+    "name": "Morgan Wigmanich",
+    "email": "okize123@gmail.com",
+    "url": "https://github.com/okize"
+  },
+  "license": "MIT"
+}
