@@ -1,4 +1,4 @@
 var $ = require('jquery');
-var pluginify = require('../../src/plugin');
+var notifyr = require('../../dist/jquery.notifyr');
 
-$('#target').pluginify();
+$('#target').notifyr();

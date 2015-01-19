@@ -1,10 +1,52 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 var $ = require('jquery');
-var pluginify = require('../../src/plugin');
+var notifyr = require('../../dist/jquery.notifyr');
 
-$('#target').pluginify();
+$('#target').notifyr();
 
-},{"../../src/plugin":3,"jquery":2}],2:[function(require,module,exports){
+},{"../../dist/jquery.notifyr":2,"jquery":3}],2:[function(require,module,exports){
+(function(factory) {
+  'use strict';
+  if (typeof define === 'function' && define.amd) {
+    define(['jquery'], factory);
+  } else if (typeof exports === 'object') {
+    factory(require('jquery'));
+  } else {
+    factory(jQuery);
+  }
+})(function($) {
+  'use strict';
+  var defaults, notifyr, pluginName;
+  pluginName = 'notifyr';
+  defaults = {
+    property: true
+  };
+  notifyr = (function() {
+    var Plugin;
+    Plugin = function(element, options) {
+      this.element = element;
+      this.options = $.extend({}, defaults, options);
+      this._defaults = defaults;
+      this._name = pluginName;
+      this.el = $(this.element);
+      return this.init();
+    };
+    Plugin.prototype.init = function() {
+      return this.el.css('color', 'blue');
+    };
+    return Plugin;
+  })();
+  return $.fn[pluginName] = function(options) {
+    this.each(function() {
+      if (!$.data(this, pluginName)) {
+        $.data(this, pluginName, new notifyr(this, options));
+      }
+    });
+    return this;
+  };
+});
+
+},{"jquery":3}],3:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v2.1.1
  * http://jquery.com/
@@ -9196,62 +9238,4 @@ return jQuery;
 
 }));
 
-},{}],3:[function(require,module,exports){
-/*!
-pluginify v1.0.0 (https://github.com/TechTarget/pluginify)
-Author: Morgan Wigmanich <okize123@gmail.com> (http://github.com/okize)
-Copyright (c) 2013 | Licensed under the MIT license
-http://www.opensource.org/licenses/mit-license.php
-*/
-(function(factory) {
-
-  'use strict';
-
-  if (typeof define === 'function' && define.amd) {
-    define(['jquery'], factory); // AMD
-  } else if (typeof exports === 'object') {
-    factory(require('jquery')); // CommonJS
-  } else {
-    factory(jQuery); // Browser globals
-  }
-
-})(function($) {
-
-  'use strict';
-
-  var pluginName = 'pluginify';
-
-  var defaults = {
-    property: true
-  };
-
-  var Pluginify = (function() {
-    function Plugin(element, options) {
-      this.element = element;
-      this.options = $.extend({}, defaults, options);
-      this._defaults = defaults;
-      this._name = pluginName;
-      this.el = $(this.element);
-      this.init();
-    }
-
-    Plugin.prototype.init = function() {
-      this.el.css('color', '#FC1501');
-    };
-
-    return Plugin;
-
-  })();
-
-  $.fn[pluginName] = function (options) {
-    this.each(function() {
-      if (!$.data(this, pluginName)) {
-        $.data(this, pluginName, new Pluginify(this, options));
-      }
-    });
-    return this;
-  };
-
-});
-
-},{"jquery":2}]},{},[1]);
+},{}]},{},[1]);

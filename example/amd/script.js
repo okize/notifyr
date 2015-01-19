@@ -2,12 +2,12 @@ require.config({
   baseUrl: '/',
   paths: {
     jquery: 'jquery/dist/jquery.min',
-    pluginify: 'plugin'
+    notifyr: 'jquery.notifyr'
   }
 });
 
-define(['jquery', 'pluginify'], function ($, pluginify) {
+define(['jquery', 'notifyr'], function ($, notifyr) {
 
-  $('#target').pluginify();
+  $('#target').notifyr();
 
 });
