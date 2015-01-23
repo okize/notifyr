@@ -7,11 +7,14 @@ browserify = require('browserify')
 rename = require('gulp-rename')
 source = require('vinyl-source-stream')
 run = require('run-sequence')
+uglify = require('gulp-uglifyjs')
 
 # config
 port = 1111
 pluginScript = './src/coffeescript/notifyr.coffee'
+pluginDistDir = './dist'
 pluginName = 'jquery.notifyr.js'
+pluginNameMin = 'jquery.notifyr.min.js'
 
 # gulp tasks
 gulp.task 'server', ->
@@ -24,18 +27,18 @@ gulp.task 'server', ->
     ]
     port: port
     livereload: true
-  gutil.log gutil.colors.red('Examples can be viewed at'), gutil.colors.blue('http://localhost:' + port)
+  gutil.log(gutil.colors.red('Examples can be viewed at'), gutil.colors.blue('http://localhost:' + port))
 
 gulp.task 'html', ->
   gulp
     .src('./example/*.html')
-    .pipe connect.reload()
+    .pipe(connect.reload())
 
 gulp.task 'browserify', ->
   browserify('./example/commonjs/script.js')
     .bundle()
-    .pipe source('compiled.js')
-    .pipe gulp.dest('./example/commonjs/')
+    .pipe(source('compiled.js'))
+    .pipe(gulp.dest('./example/commonjs/'))
 
 gulp.task 'build', ->
   gutil.log gutil.colors.red('compiling coffeescript...')
@@ -45,9 +48,9 @@ gulp.task 'build', ->
       bare: true
       sourceMap: false
     ).on('error', gutil.log))
-    .pipe rename(pluginName)
+    .pipe(rename(pluginName))
     .pipe(
-      gulp.dest('./dist')
+      gulp.dest(pluginDistDir)
     )
 
 gulp.task 'refresh', (callback) ->
@@ -59,7 +62,12 @@ gulp.task 'refresh', (callback) ->
   )
   return
 
-  console.log 'refresh'
+gulp.task 'minify', ->
+  gulp
+    .src("#{pluginDistDir}/#{pluginName}")
+    .pipe(uglify())
+    .pipe(rename(pluginNameMin))
+    .pipe(gulp.dest(pluginDistDir))
 
 gulp.task 'watch', ->
   gulp
