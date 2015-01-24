@@ -1,4 +1,5 @@
 # modules
+fs = require('fs')
 gulp = require('gulp')
 gutil = require('gulp-util')
 connect = require('gulp-connect')
@@ -8,16 +9,28 @@ rename = require('gulp-rename')
 source = require('vinyl-source-stream')
 run = require('run-sequence')
 uglify = require('gulp-uglifyjs')
+header = require('gulp-header')
 
 # config
+pak = JSON.parse(fs.readFileSync './package.json', 'utf8')
 port = 1111
 pluginScript = './src/coffeescript/notifyr.coffee'
 pluginDistDir = './dist'
 pluginName = 'jquery.notifyr.js'
 pluginNameMin = 'jquery.notifyr.min.js'
+banner = "/*!\n
+        #{pak.name} v#{pak.version} (#{pak.homepage})\n
+        Copyright (c) #{new Date().getFullYear()} #{pak.author}\n
+        Licensed under the #{pak.license} license\n
+        */\n"
+
+# small wrapper around gulp util logging
+log = (msg) ->
+  gutil.log gutil.colors.blue(msg)
 
 # gulp tasks
 gulp.task 'server', ->
+  console.log banner
   connect.server
     root: [
       'example'
@@ -27,7 +40,7 @@ gulp.task 'server', ->
     ]
     port: port
     livereload: true
-  gutil.log(gutil.colors.red('Examples can be viewed at'), gutil.colors.blue('http://localhost:' + port))
+  log("Examples can be viewed at http://localhost:#{port}")
 
 gulp.task 'html', ->
   gulp
@@ -49,9 +62,8 @@ gulp.task 'build', ->
       sourceMap: false
     ).on('error', gutil.log))
     .pipe(rename(pluginName))
-    .pipe(
-      gulp.dest(pluginDistDir)
-    )
+    .pipe(header(banner))
+    .pipe(gulp.dest(pluginDistDir))
 
 gulp.task 'refresh', (callback) ->
   run(
@@ -67,6 +79,7 @@ gulp.task 'minify', ->
     .src("#{pluginDistDir}/#{pluginName}")
     .pipe(uglify())
     .pipe(rename(pluginNameMin))
+    .pipe(header(banner))
     .pipe(gulp.dest(pluginDistDir))
 
 gulp.task 'watch', ->

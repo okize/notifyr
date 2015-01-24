@@ -1,3 +1,8 @@
+/*!
+ notifyr v0.0.1 (https://github.com/okize/notifyr/)
+ Copyright (c) 2015 Morgan Wigmanich <okize123@gmail.com> (http://github.com/okize)
+ Licensed under the MIT license
+ */
 (function(factory) {
   'use strict';
   if (typeof define === 'function' && define.amd) {

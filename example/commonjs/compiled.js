@@ -5,6 +5,11 @@ var notifyr = require('../../dist/jquery.notifyr');
 $('#target').notifyr();
 
 },{"../../dist/jquery.notifyr":2,"jquery":3}],2:[function(require,module,exports){
+/*!
+ notifyr v0.0.1 (https://github.com/okize/notifyr/)
+ Copyright (c) 2015 Morgan Wigmanich <okize123@gmail.com> (http://github.com/okize)
+ Licensed under the MIT license
+ */
 (function(factory) {
   'use strict';
   if (typeof define === 'function' && define.amd) {
