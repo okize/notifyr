@@ -4,9 +4,10 @@ gulp = require('gulp')
 gutil = require('gulp-util')
 connect = require('gulp-connect')
 coffee = require('gulp-coffee')
-browserify = require('browserify')
 rename = require('gulp-rename')
 source = require('vinyl-source-stream')
+browserify = require('browserify')
+clean = require('del')
 run = require('run-sequence')
 uglify = require('gulp-uglifyjs')
 header = require('gulp-header')
@@ -15,7 +16,7 @@ header = require('gulp-header')
 pak = JSON.parse(fs.readFileSync './package.json', 'utf8')
 port = 1111
 pluginScript = './src/coffeescript/notifyr.coffee'
-pluginDistDir = './dist'
+pluginBuildDir = './dist'
 pluginName = 'jquery.notifyr.js'
 pluginNameMin = 'jquery.notifyr.min.js'
 banner = "/*!\n
@@ -30,7 +31,6 @@ log = (msg) ->
 
 # gulp tasks
 gulp.task 'server', ->
-  console.log banner
   connect.server
     root: [
       'example'
@@ -41,6 +41,14 @@ gulp.task 'server', ->
     port: port
     livereload: true
   log("Examples can be viewed at http://localhost:#{port}")
+
+gulp.task 'clean', ->
+  gulp
+    .src('build', {read: false})
+    .pipe(clean())
+
+gulp.task 'clean', ->
+  clean [pluginBuildDir]
 
 gulp.task 'html', ->
   gulp
@@ -54,7 +62,6 @@ gulp.task 'browserify', ->
     .pipe(gulp.dest('./example/commonjs/'))
 
 gulp.task 'build', ->
-  gutil.log gutil.colors.red('compiling coffeescript...')
   gulp
     .src(pluginScript)
     .pipe(coffee(
@@ -63,10 +70,11 @@ gulp.task 'build', ->
     ).on('error', gutil.log))
     .pipe(rename(pluginName))
     .pipe(header(banner))
-    .pipe(gulp.dest(pluginDistDir))
+    .pipe(gulp.dest(pluginBuildDir))
 
 gulp.task 'refresh', (callback) ->
   run(
+    'clean',
     'build',
     'browserify',
     'html',
@@ -76,11 +84,11 @@ gulp.task 'refresh', (callback) ->
 
 gulp.task 'minify', ->
   gulp
-    .src("#{pluginDistDir}/#{pluginName}")
+    .src("#{pluginBuildDir}/#{pluginName}")
     .pipe(uglify())
     .pipe(rename(pluginNameMin))
     .pipe(header(banner))
-    .pipe(gulp.dest(pluginDistDir))
+    .pipe(gulp.dest(pluginBuildDir))
 
 gulp.task 'watch', ->
   gulp
