@@ -20,6 +20,7 @@
     "gulp-connect": "*",
     "gulp-header": "*",
     "gulp-rename": "*",
+    "gulp-size": "*",
     "gulp-uglifyjs": "*",
     "gulp-util": "*",
     "jquery": "*",

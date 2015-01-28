@@ -5,12 +5,13 @@ gutil = require('gulp-util')
 connect = require('gulp-connect')
 coffee = require('gulp-coffee')
 rename = require('gulp-rename')
-source = require('vinyl-source-stream')
-browserify = require('browserify')
-clean = require('del')
-run = require('run-sequence')
 uglify = require('gulp-uglifyjs')
 header = require('gulp-header')
+size = require('gulp-size')
+source = require('vinyl-source-stream')
+run = require('run-sequence')
+browserify = require('browserify')
+clean = require('del')
 
 # config
 pak = JSON.parse(fs.readFileSync './package.json', 'utf8')
@@ -88,6 +89,8 @@ gulp.task 'minify', ->
     .pipe(uglify())
     .pipe(rename(pluginNameMin))
     .pipe(header(banner))
+    .pipe(size({showFiles: true}))
+    .pipe(size({showFiles: true, gzip: true}))
     .pipe(gulp.dest(pluginBuildDir))
 
 gulp.task 'watch', ->
