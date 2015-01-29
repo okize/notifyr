@@ -62,7 +62,7 @@ gulp.task 'browserify', ->
     .pipe(source('compiled.js'))
     .pipe(gulp.dest('./example/commonjs/'))
 
-gulp.task 'build', ->
+gulp.task 'compile-js', ->
   gulp
     .src(pluginScript)
     .pipe(coffee(
@@ -75,8 +75,7 @@ gulp.task 'build', ->
 
 gulp.task 'refresh', (callback) ->
   run(
-    'clean',
-    'build',
+    'compile-js',
     'browserify',
     'html',
     callback
@@ -97,12 +96,22 @@ gulp.task 'watch', ->
   gulp
     .watch [
       pluginScript
-      './example/*.html'
+      './example/*/*.html'
       './example/*/script.js'
       './assets/styles.css'
     ], [
       'refresh'
     ]
+
+gulp.task 'build', (callback) ->
+  run(
+    'clean',
+    'compile-js',
+    'browserify',
+    'minify',
+    callback
+  )
+  return
 
 gulp.task 'default', [
   'server'
