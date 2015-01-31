@@ -26,7 +26,7 @@
       @init()
 
     Plugin::init = ->
-      @el.css 'color', '#FC1501'
+      @el.css 'color', 'red'
 
     Plugin
 
