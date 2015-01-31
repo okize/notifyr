@@ -8,6 +8,10 @@ require.config({
 
 define(['jquery', 'notifyr'], function ($, notifyr) {
 
-  $('#target').notifyr();
+  function slowAlert() {
+    $('#target').notifyr();
+  }
+
+  window.setTimeout(slowAlert, 2000);
 
 });

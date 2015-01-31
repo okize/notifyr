@@ -2,6 +2,10 @@ $(document).on('ready', function() {
 
   'use strict';
 
-  $('#target').notifyr();
+  function slowAlert() {
+    $('#target').notifyr();
+  }
+
+  window.setTimeout(slowAlert, 2000);
 
 });
