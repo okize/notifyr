@@ -6,6 +6,8 @@ connect = require('gulp-connect')
 coffee = require('gulp-coffee')
 rename = require('gulp-rename')
 uglify = require('gulp-uglifyjs')
+sass = require('gulp-sass')
+autoprefixer = require('gulp-autoprefixer')
 header = require('gulp-header')
 size = require('gulp-size')
 source = require('vinyl-source-stream')
@@ -16,6 +18,8 @@ clean = require('del')
 # config
 pak = JSON.parse(fs.readFileSync './package.json', 'utf8')
 port = 1111
+sassEntry = './src/sass/styles.sass'
+sassBuildDir = './assets'
 pluginScript = './src/coffeescript/notifyr.coffee'
 pluginBuildDir = './dist'
 pluginName = 'jquery.notifyr.js'
@@ -73,9 +77,25 @@ gulp.task 'compile-js', ->
     .pipe(header(banner))
     .pipe(gulp.dest(pluginBuildDir))
 
+gulp.task 'compile-css', ->
+  gulp
+    .src('./src/sass/styles.sass')
+    .pipe(sass({
+      outputStyle: 'nested' #compressed
+      includePaths: ['./src/sass/']
+      errLogToConsole: false
+      onError: (e) -> log e.message
+    }))
+    # .pipe(autoprefixer({
+    #   browsers: ['last 2 versions', 'Firefox >= 26', 'Explorer >= 8']
+    #   cascade: false
+    # }))
+    .pipe(gulp.dest(sassBuildDir))
+
 gulp.task 'refresh', (callback) ->
   run(
     'compile-js',
+    'compile-css',
     'browserify',
     'html',
     callback
@@ -96,9 +116,9 @@ gulp.task 'watch', ->
   gulp
     .watch [
       pluginScript
+      './src/sass/*'
       './example/*/*.html'
       './example/*/script.js'
-      './assets/styles.css'
     ], [
       'refresh'
     ]
@@ -107,6 +127,7 @@ gulp.task 'build', (callback) ->
   run(
     'clean',
     'compile-js',
+    'compile-css',
     'browserify',
     'minify',
     callback
