@@ -1,9 +1,9 @@
 .notification {
+  background-color: rgba(#fff, 0.8);
   position: fixed;
   max-width: 300px;
   min-width: 200px;
   border: 1px solid #ccc;
-  background: white;
   z-index: 100;
   box-shadow: -5px 5px 10px rgba(#666, .25);
 }
@@ -30,30 +30,46 @@
 
 .notification-content {
   position: relative;
-  padding: 15px;
+  padding: 15px 30px 15px 15px;
 }
 
 .notification-title {
   margin: 0 0 5px 0;
-  font-size: 125%;
+  font-size: 100%;
   font-weight: bold;
+
+  @include tablet {
+    font-size: 105%;
+  }
+
+  @include desktop {
+    font-size: 110%;
+  }
 }
 
 .notification-message {
+  font-size: 80%;
+
+  @include tablet {
+    font-size: 90%;
+  }
+
+  @include desktop {
+    font-size: 100%;
+  }
+
 }
 
 .notification-close {
-  z-index: 10;
   position: absolute;
-  top: 5px;
-  right: 5px;
+  top: 0;
+  right: 0;
   text-decoration: none;
   color: #888;
-
-  font-size: 80%;
+  font-size: 130%;
   background-color: transparent;
   border: 0;
-  padding: 5px;
+  padding: 10px;
   line-height: 1;
 
   &:focus {
@@ -63,6 +79,20 @@
   &:hover {
     color: #333;
     font-weight: bold;
+  }
+
+  @include tablet {
+    font-size: 110%;
+    padding: 8px;
+    top: 2px;
+    right: 2px;
+  }
+
+  @include desktop {
+    font-size: 90%;
+    padding: 5px;
+    top: 5px;
+    right: 5px;
   }
 
 }
