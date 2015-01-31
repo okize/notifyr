@@ -57,7 +57,7 @@ gulp.task 'clean', ->
 
 gulp.task 'html', ->
   gulp
-    .src('./example/*.html')
+    .src('./example/**/*.html')
     .pipe(connect.reload())
 
 gulp.task 'browserify', ->
@@ -86,10 +86,10 @@ gulp.task 'compile-css', ->
       errLogToConsole: false
       onError: (e) -> log e.message
     }))
-    # .pipe(autoprefixer({
-    #   browsers: ['last 2 versions', 'Firefox >= 26', 'Explorer >= 8']
-    #   cascade: false
-    # }))
+    .pipe(autoprefixer({
+      browsers: ['last 2 versions', 'Firefox >= 26', 'Explorer >= 8']
+      cascade: false
+    }))
     .pipe(gulp.dest(sassBuildDir))
 
 gulp.task 'refresh', (callback) ->
