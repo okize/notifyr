@@ -79,7 +79,7 @@ gulp.task 'compile-js', ->
 
 gulp.task 'compile-css', ->
   gulp
-    .src('./src/sass/styles.sass')
+    .src('./src/sass/styles.scss')
     .pipe(sass({
       outputStyle: 'nested' #compressed
       includePaths: ['./src/sass/']
