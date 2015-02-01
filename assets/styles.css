@@ -352,7 +352,7 @@ a:hover {
 
 .notification-top-right {
   top: 15px;
-  right: 15px; }
+  right: -300px; }
 
 .notification-bottom-left {
   bottom: 15px;
