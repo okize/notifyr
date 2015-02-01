@@ -17,6 +17,10 @@
     sticky: true
     location: 'top-right'
 
+  $.easing.easeInBack = (x, t, b, c, d, s) ->
+    s = 1.70158 if s is undefined
+    c * (t /= d) * t * ((s + 1) * t - s) + b
+
   $.easing.easeOutBack = (x, t, b, c, d, s) ->
     s = 1.70158 if s is undefined
     c * ((t = t / d - 1) * t * ((s + 1) * t + s) + 1) + b
@@ -27,6 +31,7 @@
       @options = $.extend({}, defaults, options)
       @_defaults = defaults
       @el = $(target)
+      @notice = ''
       @init()
 
     Notifyr::init = ->
@@ -44,10 +49,10 @@
       closeButton = $('<button>', {class: 'notification-close', html: '&times'})
       closeButton.on 'click', (e) =>
         e.preventDefault()
-        @empty()
+        @remove()
       title = if @options.title? then $('<div>', {class: 'notification-title', html: @options.title}) else ''
       message = $('<div>', {class: 'notification-message', html: @options.message})
-      notice = $(
+      @notice = $(
         '<div>',
           class: "notification notification-#{@options.location}"
           html: $('<div>',
@@ -55,8 +60,8 @@
             html: [closeButton, title, message]
           )
       )
-      @el.append notice
-      notice
+      @el.append @notice
+      @notice
         .stop()
         .animate
           opacity: 1
@@ -66,6 +71,16 @@
 
     Notifyr::empty = ->
       @el.empty()
+
+    Notifyr::remove = ->
+      @notice
+        .stop()
+        .animate
+          opacity: 0
+          right: '-300px'
+        , 250, 'easeInBack', =>
+          @el.empty()
+          @el.trigger 'notification-remove-complete'
 
     Notifyr
 
