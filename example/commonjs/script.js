@@ -5,6 +5,11 @@ $('#trigger-notification-1').on('click', function(e) {
   e.preventDefault();
   var data = $(e.target).data();
   $('#notifications').notifyr({message: data.notificationMessage});
+  $('#notifications').on('notification-display-complete', function() {
+    alert('display complete');
+    $('#notifications').off('notification-display-complete');
+  });
+
 });
 
 $('#trigger-notification-2').on('click', function(e) {

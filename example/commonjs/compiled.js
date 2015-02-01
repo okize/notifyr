@@ -6,6 +6,11 @@ $('#trigger-notification-1').on('click', function(e) {
   e.preventDefault();
   var data = $(e.target).data();
   $('#notifications').notifyr({message: data.notificationMessage});
+  $('#notifications').on('notification-display-complete', function() {
+    alert('display complete');
+    $('#notifications').off('notification-display-complete');
+  });
+
 });
 
 $('#trigger-notification-2').on('click', function(e) {
@@ -55,12 +60,25 @@ window.setTimeout(delayedNotice, 2000);
     sticky: true,
     location: 'top-right'
   };
+  $.easing.easeInBack = function(x, t, b, c, d, s) {
+    if (s === void 0) {
+      s = 1.70158;
+    }
+    return c * (t /= d) * t * ((s + 1) * t - s) + b;
+  };
+  $.easing.easeOutBack = function(x, t, b, c, d, s) {
+    if (s === void 0) {
+      s = 1.70158;
+    }
+    return c * ((t = t / d - 1) * t * ((s + 1) * t + s) + 1) + b;
+  };
   notifyr = (function() {
     var Notifyr;
     Notifyr = function(target, options) {
       this.options = $.extend({}, defaults, options);
       this._defaults = defaults;
       this.el = $(target);
+      this.notice = '';
       return this.init();
     };
     Notifyr.prototype.init = function() {
@@ -71,7 +89,7 @@ window.setTimeout(delayedNotice, 2000);
       return this.render();
     };
     Notifyr.prototype.render = function() {
-      var closeButton, message, notice, title;
+      var closeButton, message, title;
       this.empty();
       closeButton = $('<button>', {
         "class": 'notification-close',
@@ -80,7 +98,7 @@ window.setTimeout(delayedNotice, 2000);
       closeButton.on('click', (function(_this) {
         return function(e) {
           e.preventDefault();
-          return _this.empty();
+          return _this.remove();
         };
       })(this));
       title = this.options.title != null ? $('<div>', {
@@ -91,17 +109,36 @@ window.setTimeout(delayedNotice, 2000);
         "class": 'notification-message',
         html: this.options.message
       });
-      notice = $('<div>', {
+      this.notice = $('<div>', {
         "class": "notification notification-" + this.options.location,
         html: $('<div>', {
           "class": 'notification-content',
           html: [closeButton, title, message]
         })
       });
-      return this.el.append(notice);
+      this.el.append(this.notice);
+      return this.notice.stop().animate({
+        opacity: 1,
+        right: '15px'
+      }, 250, 'easeOutBack', (function(_this) {
+        return function() {
+          return _this.el.trigger('notification-display-complete');
+        };
+      })(this));
     };
     Notifyr.prototype.empty = function() {
       return this.el.empty();
+    };
+    Notifyr.prototype.remove = function() {
+      return this.notice.stop().animate({
+        opacity: 0,
+        right: '-300px'
+      }, 250, 'easeInBack', (function(_this) {
+        return function() {
+          _this.el.empty();
+          return _this.el.trigger('notification-remove-complete');
+        };
+      })(this));
     };
     return Notifyr;
   })();
