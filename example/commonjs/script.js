@@ -1,13 +1,32 @@
 var $ = require('jquery');
 var notifyr = require('../../dist/jquery.notifyr');
 
-function slowAlert() {
-  $('#target').notifyr();
+$('#trigger-notification-1').on('click', function(e) {
+  e.preventDefault();
+  var data = $(e.target).data();
+  $('#notifications').notifyr({message: data.notificationMessage});
+});
+
+$('#trigger-notification-2').on('click', function(e) {
+  e.preventDefault();
+  var data = $(e.target).data();
+  $('#notifications').notifyr({message: data.notificationMessage, location: data.notificationLocation});
+});
+
+$('#trigger-notification-3').on('click', function(e) {
+  e.preventDefault();
+  var data = $(e.target).data();
+  $('#notifications').notifyr({message: data.notificationMessage, location: data.notificationLocation, title: 'A title here'});
+});
+
+$('#trigger-notification-4').on('click', function(e) {
+  e.preventDefault();
+  var data = $(e.target).data();
+  $('#notifications').notifyr({message: data.notificationMessage, location: data.notificationLocation});
+});
+
+function delayedNotice() {
+  $('#notifications').notifyr({title: 'Delayed notification', message: 'This is the message of the notification'});
 }
 
-window.setTimeout(slowAlert, 2000);
-
-$('#trigger-notification').on('click', function(e) {
-  e.preventDefault();
-  $("<p role='alert'>Testing aria live.</p>").appendTo($('#notifications'));
-});
+window.setTimeout(delayedNotice, 2000);
