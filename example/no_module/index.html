@@ -3,13 +3,30 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Plugin test</title>
+    <title>Notifyr test</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/styles.css">
   </head>
   <body>
-    <h1 id="target">This text should be red</h1>
+
+    <div id="notifications" aria-live="assertive" aria-atomic="true" aria-relevant="additions"></div>
+
+    <ul>
+      <li>
+        <a href="#" id="trigger-notification-1" data-notification-message="This is a triggered message" >Trigger notification</a>
+      </li>
+      <li>
+        <a href="#" id="trigger-notification-2" data-notification-message="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla suscipit, sapien vitae condimentum laoreet, quam lorem lacinia leo, a congue ipsum purus id odio. Quisque rhoncus sem lacus, vitae posuere nisl tempus nec. Nunc ullamcorper erat quis urna porta, ut maximus risus eleifend." data-notification-location="bottom-left">Open long notification in bottom left</a>
+      </li>
+      <li>
+        <a href="#" id="trigger-notification-3" data-notification-message="A message for you" data-notification-location="bottom-right">A notification in bottom right with a title</a>
+      </li>
+      <li>
+        <a href="#" id="trigger-notification-4" data-notification-message="This is a triggered message" data-notification-location="top-left">A top-left notification for completeness</a>
+      </li>
+    </ul>
+
     <script src="/jquery/dist/jquery.min.js"></script>
     <script src="/jquery.notifyr.js"></script>
     <script src="script.js"></script>
