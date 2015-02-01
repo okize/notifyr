@@ -17,29 +17,60 @@
   var defaults, notifyr, pluginName;
   pluginName = 'notifyr';
   defaults = {
-    property: true
+    sticky: true,
+    location: 'top-right'
   };
   notifyr = (function() {
-    var Plugin;
-    Plugin = function(element, options) {
-      this.element = element;
+    var Notifyr;
+    Notifyr = function(target, options) {
       this.options = $.extend({}, defaults, options);
       this._defaults = defaults;
-      this._name = pluginName;
-      this.el = $(this.element);
+      this.el = $(target);
       return this.init();
     };
-    Plugin.prototype.init = function() {
-      return this.el.css('color', '#FC1501');
+    Notifyr.prototype.init = function() {
+      this.empty();
+      if (this.options.message == null) {
+        return;
+      }
+      return this.render();
     };
-    return Plugin;
+    Notifyr.prototype.render = function() {
+      var closeButton, message, notice, title;
+      this.empty();
+      closeButton = $('<button>', {
+        "class": 'notification-close',
+        html: '&times'
+      });
+      closeButton.on('click', (function(_this) {
+        return function(e) {
+          e.preventDefault();
+          return _this.empty();
+        };
+      })(this));
+      title = this.options.title != null ? $('<div>', {
+        "class": 'notification-title',
+        html: this.options.title
+      }) : '';
+      message = $('<div>', {
+        "class": 'notification-message',
+        html: this.options.message
+      });
+      notice = $('<div>', {
+        "class": "notification notification-" + this.options.location,
+        html: $('<div>', {
+          "class": 'notification-content',
+          html: [closeButton, title, message]
+        })
+      });
+      return this.el.append(notice);
+    };
+    Notifyr.prototype.empty = function() {
+      return this.el.empty();
+    };
+    return Notifyr;
   })();
   return $.fn[pluginName] = function(options) {
-    this.each(function() {
-      if (!$.data(this, pluginName)) {
-        $.data(this, pluginName, new notifyr(this, options));
-      }
-    });
-    return this;
+    return new notifyr(this, options);
   };
 });

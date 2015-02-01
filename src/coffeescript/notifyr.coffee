@@ -13,28 +13,51 @@
 
   pluginName = 'notifyr'
 
-  defaults = property: true
+  defaults =
+    sticky: true
+    location: 'top-right'
 
   notifyr = (->
 
-    Plugin = (element, options) ->
-      @element = element
+    Notifyr = (target, options) ->
       @options = $.extend({}, defaults, options)
       @_defaults = defaults
-      @_name = pluginName
-      @el = $(@element)
+      @el = $(target)
       @init()
 
-    Plugin::init = ->
-      @el.css 'color', 'red'
+    Notifyr::init = ->
 
-    Plugin
+      # clear out notification dropzone
+      @empty()
+
+      # do nothing if a message option was not passed
+      return if !@options.message?
+
+      @render()
+
+    Notifyr::render = () ->
+      @empty()
+      closeButton = $('<button>', {class: 'notification-close', html: '&times'})
+      closeButton.on 'click', (e) =>
+        e.preventDefault()
+        @empty()
+      title = if @options.title? then $('<div>', {class: 'notification-title', html: @options.title}) else ''
+      message = $('<div>', {class: 'notification-message', html: @options.message})
+      notice = $(
+        '<div>',
+          class: "notification notification-#{@options.location}"
+          html: $('<div>',
+            class: 'notification-content'
+            html: [closeButton, title, message]
+          )
+      )
+      @el.append notice
+
+    Notifyr::empty = ->
+      @el.empty()
+
+    Notifyr
 
   )()
 
-  $.fn[pluginName] = (options) ->
-    @each ->
-      $.data this, pluginName, new notifyr(this, options)  unless $.data(this, pluginName)
-      return
-
-    return this
+  $.fn[pluginName] = (options) -> return new notifyr(this, options)
