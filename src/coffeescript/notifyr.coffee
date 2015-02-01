@@ -17,6 +17,10 @@
     sticky: true
     location: 'top-right'
 
+  $.easing.easeOutBack = (x, t, b, c, d, s) ->
+    s = 1.70158 if s is undefined
+    c * ((t = t / d - 1) * t * ((s + 1) * t + s) + 1) + b
+
   notifyr = (->
 
     Notifyr = (target, options) ->
@@ -52,6 +56,13 @@
           )
       )
       @el.append notice
+      notice
+        .stop()
+        .animate
+          opacity: 1
+          right: '15px'
+        , 250, 'easeOutBack', =>
+          @el.trigger 'notification-display-complete'
 
     Notifyr::empty = ->
       @el.empty()

@@ -20,6 +20,12 @@
     sticky: true,
     location: 'top-right'
   };
+  $.easing.easeOutBack = function(x, t, b, c, d, s) {
+    if (s === void 0) {
+      s = 1.70158;
+    }
+    return c * ((t = t / d - 1) * t * ((s + 1) * t + s) + 1) + b;
+  };
   notifyr = (function() {
     var Notifyr;
     Notifyr = function(target, options) {
@@ -63,7 +69,15 @@
           html: [closeButton, title, message]
         })
       });
-      return this.el.append(notice);
+      this.el.append(notice);
+      return notice.stop().animate({
+        opacity: 1,
+        right: '15px'
+      }, 250, 'easeOutBack', (function(_this) {
+        return function() {
+          return _this.el.trigger('notification-display-complete');
+        };
+      })(this));
     };
     Notifyr.prototype.empty = function() {
       return this.el.empty();
