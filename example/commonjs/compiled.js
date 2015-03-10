@@ -16,23 +16,38 @@ $('#trigger-notification-1').on('click', function(e) {
 $('#trigger-notification-2').on('click', function(e) {
   e.preventDefault();
   var data = $(e.target).data();
-  $('#notifications').notifyr({message: data.notificationMessage, location: data.notificationLocation});
+  $('#notifications').notifyr({
+    message: data.notificationMessage,
+    location: data.notificationLocation
+  });
 });
 
 $('#trigger-notification-3').on('click', function(e) {
   e.preventDefault();
   var data = $(e.target).data();
-  $('#notifications').notifyr({message: data.notificationMessage, location: data.notificationLocation, title: 'A title here'});
+  $('#notifications').notifyr({
+    message: data.notificationMessage,
+    location: data.notificationLocation,
+    title: 'A title here'
+  });
 });
 
 $('#trigger-notification-4').on('click', function(e) {
   e.preventDefault();
   var data = $(e.target).data();
-  $('#notifications').notifyr({message: data.notificationMessage, location: data.notificationLocation});
+  $('#notifications').notifyr({
+    message: data.notificationMessage,
+    location: data.notificationLocation,
+    title: 'A non standard close button',
+    closeButtonHtml: '<button style="margin-bottom: 10px;">close</button>'
+  });
 });
 
 function delayedNotice() {
-  $('#notifications').notifyr({title: 'Delayed notification', message: 'This is the message of the notification'});
+  $('#notifications').notifyr({
+    title: 'Delayed notification',
+    message: 'This is the message of the notification'
+  });
 }
 
 window.setTimeout(delayedNotice, 2000);
@@ -58,7 +73,8 @@ window.setTimeout(delayedNotice, 2000);
   pluginName = 'notifyr';
   defaults = {
     sticky: true,
-    location: 'top-right'
+    location: 'top-right',
+    closeButtonHtml: '<button class="notification-close">&times;</button>'
   };
   $.easing.easeInBack = function(x, t, b, c, d, s) {
     if (s === void 0) {
@@ -91,10 +107,7 @@ window.setTimeout(delayedNotice, 2000);
     Notifyr.prototype.render = function() {
       var closeButton, message, title;
       this.empty();
-      closeButton = $('<button>', {
-        "class": 'notification-close',
-        html: '&times'
-      });
+      closeButton = $(this.options.closeButtonHtml);
       closeButton.on('click', (function(_this) {
         return function(e) {
           e.preventDefault();
