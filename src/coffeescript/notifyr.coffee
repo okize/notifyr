@@ -16,6 +16,7 @@
   defaults =
     sticky: true
     location: 'top-right'
+    classes: []
     closeButtonHtml: '<button class="notification-close">&times;</button>'
 
   $.easing.easeInBack = (x, t, b, c, d, s) ->
@@ -55,7 +56,7 @@
       message = $('<div>', {class: 'notification-message', html: @options.message})
       @notice = $(
         '<div>',
-          class: "notification notification-#{@options.location}"
+          class: "notification notification-#{@options.location} #{@options.classes.join(' ')}"
           html: $('<div>',
             class: 'notification-content'
             html: [closeButton, title, message]
