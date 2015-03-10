@@ -1,9 +1,8 @@
 var $ = require('jquery');
 var notifyr = require('../../dist/jquery.notifyr');
 
-$('#trigger-notification-1').on('click', function(e) {
+$('#notification-1').on('click', function(e) {
   e.preventDefault();
-  var data = $(e.target).data();
   $('#notifications').notifyr({message: data.notificationMessage});
   $('#notifications').on('notification-display-complete', function() {
     alert('display complete');
@@ -12,31 +11,30 @@ $('#trigger-notification-1').on('click', function(e) {
 
 });
 
-$('#trigger-notification-2').on('click', function(e) {
+$('#notification-2').on('click', function(e) {
   e.preventDefault();
-  var data = $(e.target).data();
   $('#notifications').notifyr({
-    message: data.notificationMessage,
-    location: data.notificationLocation
+    message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla suscipit, sapien vitae condimentum laoreet, quam lorem lacinia leo, a congue ipsum purus id odio. Quisque rhoncus sem lacus, vitae posuere nisl tempus nec. Nunc ullamcorper erat quis urna porta, ut maximus risus eleifend.',
+    location: 'bottom-left',
+    classes: ['custom-notification-class']
   });
 });
 
-$('#trigger-notification-3').on('click', function(e) {
+$('#notification-3').on('click', function(e) {
   e.preventDefault();
   var data = $(e.target).data();
   $('#notifications').notifyr({
     message: data.notificationMessage,
     location: data.notificationLocation,
-    title: 'A title here'
+    title: data.notificationTitle
   });
 });
 
-$('#trigger-notification-4').on('click', function(e) {
+$('#notification-4').on('click', function(e) {
   e.preventDefault();
-  var data = $(e.target).data();
   $('#notifications').notifyr({
-    message: data.notificationMessage,
-    location: data.notificationLocation,
+    message: 'This is annoyingly on top of a link',
+    location: 'top-left',
     title: 'A non standard close button',
     closeButtonHtml: '<button style="margin-bottom: 10px;">close</button>'
   });
