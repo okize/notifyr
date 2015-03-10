@@ -4,12 +4,18 @@ $(document).on('ready', function() {
 
   $('#notification-1').on('click', function(e) {
     e.preventDefault();
-    $('#notifications').notifyr({message: data.notificationMessage});
+    $('#notifications').notifyr({
+      title: 'Events',
+      message: 'Notifications trigger events after they appear and after they are dismissed'
+    });
     $('#notifications').on('notification-display-complete', function() {
-      alert('display complete');
+      alert('Notification display complete');
       $('#notifications').off('notification-display-complete');
     });
-
+    $('#notifications').on( 'notification-remove-complete', function() {
+      alert('Notification remove complete');
+      $('#notifications').off( 'notification-remove-complete');
+    });
   });
 
   $('#notification-2').on('click', function(e) {
