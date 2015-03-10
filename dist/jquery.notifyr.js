@@ -18,7 +18,8 @@
   pluginName = 'notifyr';
   defaults = {
     sticky: true,
-    location: 'top-right'
+    location: 'top-right',
+    closeButtonHtml: '<button class="notification-close">&times;</button>'
   };
   $.easing.easeInBack = function(x, t, b, c, d, s) {
     if (s === void 0) {
@@ -51,10 +52,7 @@
     Notifyr.prototype.render = function() {
       var closeButton, message, title;
       this.empty();
-      closeButton = $('<button>', {
-        "class": 'notification-close',
-        html: '&times'
-      });
+      closeButton = $(this.options.closeButtonHtml);
       closeButton.on('click', (function(_this) {
         return function(e) {
           e.preventDefault();
