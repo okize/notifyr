@@ -16,6 +16,7 @@
   defaults =
     sticky: true
     location: 'top-right'
+    closeButtonHtml: '<button class="notification-close">&times;</button>'
 
   $.easing.easeInBack = (x, t, b, c, d, s) ->
     s = 1.70158 if s is undefined
@@ -46,7 +47,7 @@
 
     Notifyr::render = () ->
       @empty()
-      closeButton = $('<button>', {class: 'notification-close', html: '&times'})
+      closeButton = $(@options.closeButtonHtml)
       closeButton.on 'click', (e) =>
         e.preventDefault()
         @remove()
