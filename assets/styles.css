@@ -338,6 +338,7 @@ a:hover {
   text-decoration: underline; }
 
 .notification {
+  opacity: 0;
   background-color: rgba(255, 255, 255, 0.8);
   position: fixed;
   max-width: 300px;
@@ -348,7 +349,7 @@ a:hover {
 
 .notification-top-left {
   top: 15px;
-  left: 15px; }
+  left: -300px; }
 
 .notification-top-right {
   top: 15px;
@@ -356,11 +357,11 @@ a:hover {
 
 .notification-bottom-left {
   bottom: 15px;
-  left: 15px; }
+  left: -300px; }
 
 .notification-bottom-right {
   bottom: 15px;
-  right: 15px; }
+  right: -300px; }
 
 .notification-content {
   position: relative;
