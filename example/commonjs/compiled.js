@@ -33,7 +33,8 @@ $('#notification-3').on('click', function(e) {
   $('#notifications').notifyr({
     message: data.notificationMessage,
     location: data.notificationLocation,
-    title: data.notificationTitle
+    title: data.notificationTitle,
+    animationSpeed: data.notificationAnimationSpeed
   });
 });
 
@@ -78,6 +79,7 @@ window.setTimeout(delayedNotice, 2000);
   defaults = {
     sticky: true,
     location: 'top-right',
+    animationSpeed: 250,
     classes: [],
     closeButtonHtml: '<button class="notification-close">&times;</button>'
   };
@@ -135,10 +137,7 @@ window.setTimeout(delayedNotice, 2000);
         })
       });
       this.el.append(this.notice);
-      return this.notice.stop().animate({
-        opacity: 1,
-        right: '15px'
-      }, 250, 'easeOutBack', (function(_this) {
+      return this.notice.stop().animate(this.animateOptions('show'), this.options.animationSpeed, 'easeOutBack', (function(_this) {
         return function() {
           return _this.el.trigger('notification-display-complete');
         };
@@ -148,15 +147,24 @@ window.setTimeout(delayedNotice, 2000);
       return this.el.empty();
     };
     Notifyr.prototype.remove = function() {
-      return this.notice.stop().animate({
-        opacity: 0,
-        right: '-300px'
-      }, 250, 'easeInBack', (function(_this) {
+      return this.notice.stop().animate(this.animateOptions('hide'), this.options.animationSpeed, 'easeInBack', (function(_this) {
         return function() {
           _this.el.empty();
           return _this.el.trigger('notification-remove-complete');
         };
       })(this));
+    };
+    Notifyr.prototype.animateOptions = function(state) {
+      var opts;
+      opts = {};
+      if (state === 'show') {
+        opts.opacity = 1;
+        opts.right = '15px';
+      } else {
+        opts.opacity = 0;
+        opts.right = '-300px';
+      }
+      return opts;
     };
     return Notifyr;
   })();

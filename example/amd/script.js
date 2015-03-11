@@ -39,7 +39,8 @@ define(['jquery', 'notifyr'], function ($, notifyr) {
     $('#notifications').notifyr({
       message: data.notificationMessage,
       location: data.notificationLocation,
-      title: data.notificationTitle
+      title: data.notificationTitle,
+      animationSpeed: data.notificationAnimationSpeed
     });
   });
 

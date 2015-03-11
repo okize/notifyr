@@ -32,7 +32,8 @@ $('#notification-3').on('click', function(e) {
   $('#notifications').notifyr({
     message: data.notificationMessage,
     location: data.notificationLocation,
-    title: data.notificationTitle
+    title: data.notificationTitle,
+    animationSpeed: data.notificationAnimationSpeed
   });
 });
 
