@@ -5,17 +5,14 @@
   background-color: rgba(#fff, 0.9);
   border: 1px solid #bbb;
   box-shadow: -5px 5px 10px rgba(#aaa, .25);
-  min-width: calc(100% - 30px);
-  max-width: calc(100% - 30px);
+  width: calc(100% - 30px);
 
   @include tablet {
-    min-width: 200px;
-    max-width: 300px;
+    width: 250px;
   }
 
   @include desktop {
-    min-width: 250px;
-    max-width: 300px;
+    width: 300px;
   }
 
 }
