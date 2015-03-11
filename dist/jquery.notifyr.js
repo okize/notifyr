@@ -17,9 +17,11 @@
   var defaults, notifyr, pluginName;
   pluginName = 'notifyr';
   defaults = {
-    sticky: true,
+    sticky: false,
+    lifespan: 5000,
     location: 'top-right',
     animationSpeed: 250,
+    offscreenPosition: '-5em',
     classes: [],
     closeButtonHtml: '<button class="notification-close">&times;</button>'
   };
@@ -41,7 +43,7 @@
       this.options = $.extend({}, defaults, options);
       this._defaults = defaults;
       this.el = $(target);
-      this.notice = '';
+      this.timer = '';
       return this.init();
     };
     Notifyr.prototype.init = function() {
@@ -52,7 +54,7 @@
       return this.render();
     };
     Notifyr.prototype.render = function() {
-      var closeButton, message, title;
+      var closeButton, message, offset, opts, title;
       closeButton = $(this.options.closeButtonHtml);
       closeButton.on('click', (function(_this) {
         return function(e) {
@@ -76,19 +78,34 @@
         })
       });
       this.el.append(this.notice);
-      return this.notice.stop().animate(this.animateOptions('show'), this.options.animationSpeed, 'easeOutBack', (function(_this) {
+      opts = this.animateOptions('show');
+      offset = this.options.location.match(/left/) ? {
+        left: this.options.offscreenPosition
+      } : {
+        right: this.options.offscreenPosition
+      };
+      return this.notice.stop().css(offset).animate(opts, this.options.animationSpeed, 'easeOutBack', (function(_this) {
         return function() {
-          return _this.el.trigger('notification-display-complete');
+          _this.el.trigger('notification-display-complete');
+          if (!_this.options.sticky) {
+            clearTimeout(_this.timer);
+            return _this.timer = setTimeout(function() {
+              return _this.remove();
+            }, _this.options.lifespan);
+          }
         };
       })(this));
     };
     Notifyr.prototype.empty = function() {
+      clearTimeout(this.timer);
       return this.el.empty();
     };
     Notifyr.prototype.remove = function() {
-      return this.notice.stop().animate(this.animateOptions('hide'), this.options.animationSpeed, 'easeInBack', (function(_this) {
+      var opts;
+      clearTimeout(this.timer);
+      opts = this.animateOptions('hide');
+      return this.notice.stop().animate(opts, this.options.animationSpeed, 'easeInBack', (function(_this) {
         return function() {
-          _this.el.empty();
           return _this.el.trigger('notification-remove-complete');
         };
       })(this));
@@ -99,16 +116,16 @@
       if (state === 'show') {
         opts.opacity = 1;
         if (this.options.location.match(/left/)) {
-          opts.left = '15px';
+          opts.left = this.notice.css('left');
         } else {
-          opts.right = '15px';
+          opts.right = this.notice.css('right');
         }
       } else {
         opts.opacity = 0;
         if (this.options.location.match(/left/)) {
-          opts.left = '-300px';
+          opts.left = this.options.offscreenPosition;
         } else {
-          opts.right = '-300px';
+          opts.right = this.options.offscreenPosition;
         }
       }
       return opts;
