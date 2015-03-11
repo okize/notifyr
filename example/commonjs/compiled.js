@@ -113,7 +113,6 @@ window.setTimeout(delayedNotice, 2000);
     };
     Notifyr.prototype.render = function() {
       var closeButton, message, title;
-      this.empty();
       closeButton = $(this.options.closeButtonHtml);
       closeButton.on('click', (function(_this) {
         return function(e) {
@@ -159,10 +158,18 @@ window.setTimeout(delayedNotice, 2000);
       opts = {};
       if (state === 'show') {
         opts.opacity = 1;
-        opts.right = '15px';
+        if (this.options.location.match(/left/)) {
+          opts.left = '15px';
+        } else {
+          opts.right = '15px';
+        }
       } else {
         opts.opacity = 0;
-        opts.right = '-300px';
+        if (this.options.location.match(/left/)) {
+          opts.left = '-300px';
+        } else {
+          opts.right = '-300px';
+        }
       }
       return opts;
     };

@@ -19,6 +19,7 @@
   defaults = {
     sticky: true,
     location: 'top-right',
+    animationSpeed: 250,
     classes: [],
     closeButtonHtml: '<button class="notification-close">&times;</button>'
   };
@@ -52,7 +53,6 @@
     };
     Notifyr.prototype.render = function() {
       var closeButton, message, title;
-      this.empty();
       closeButton = $(this.options.closeButtonHtml);
       closeButton.on('click', (function(_this) {
         return function(e) {
@@ -76,10 +76,7 @@
         })
       });
       this.el.append(this.notice);
-      return this.notice.stop().animate({
-        opacity: 1,
-        right: '15px'
-      }, 250, 'easeOutBack', (function(_this) {
+      return this.notice.stop().animate(this.animateOptions('show'), this.options.animationSpeed, 'easeOutBack', (function(_this) {
         return function() {
           return _this.el.trigger('notification-display-complete');
         };
@@ -89,15 +86,32 @@
       return this.el.empty();
     };
     Notifyr.prototype.remove = function() {
-      return this.notice.stop().animate({
-        opacity: 0,
-        right: '-300px'
-      }, 250, 'easeInBack', (function(_this) {
+      return this.notice.stop().animate(this.animateOptions('hide'), this.options.animationSpeed, 'easeInBack', (function(_this) {
         return function() {
           _this.el.empty();
           return _this.el.trigger('notification-remove-complete');
         };
       })(this));
+    };
+    Notifyr.prototype.animateOptions = function(state) {
+      var opts;
+      opts = {};
+      if (state === 'show') {
+        opts.opacity = 1;
+        if (this.options.location.match(/left/)) {
+          opts.left = '15px';
+        } else {
+          opts.right = '15px';
+        }
+      } else {
+        opts.opacity = 0;
+        if (this.options.location.match(/left/)) {
+          opts.left = '-300px';
+        } else {
+          opts.right = '-300px';
+        }
+      }
+      return opts;
     };
     return Notifyr;
   })();
