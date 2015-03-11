@@ -48,7 +48,6 @@
       @render()
 
     Notifyr::render = () ->
-      @empty()
       closeButton = $(@options.closeButtonHtml)
       closeButton.on 'click', (e) =>
         e.preventDefault()
@@ -83,10 +82,16 @@
       opts = {}
       if (state == 'show')
         opts.opacity = 1
-        opts.right = '15px'
+        if @options.location.match(/left/)
+          opts.left = '15px'
+        else
+          opts.right = '15px'
       else
         opts.opacity = 0
-        opts.right = '-300px'
+        if @options.location.match(/left/)
+          opts.left = '-300px'
+        else
+          opts.right = '-300px'
       opts
 
     Notifyr
