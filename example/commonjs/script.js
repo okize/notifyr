@@ -47,11 +47,21 @@ $('#notification-4').on('click', function(e) {
   });
 });
 
-function delayedNotice() {
+$('#notification-5').on('click', function(e) {
+  e.preventDefault();
   $('#notifications').notifyr({
-    title: 'Delayed notification',
-    message: 'This is the message of the notification'
+    location: 'top-right',
+    sticky: true,
+    title: 'Sticky notification',
+    message: 'This notification will not be dismissed until the close button is clicked'
+  });
+});
+
+function delayedNotification() {
+  $('#notifications').notifyr({
+    title: 'This is the optional title',
+    message: 'This is the notification message'
   });
 }
 
-window.setTimeout(delayedNotice, 2000);
+window.setTimeout(delayedNotification, 2000);
