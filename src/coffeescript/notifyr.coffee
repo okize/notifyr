@@ -14,9 +14,10 @@
   pluginName = 'notifyr'
 
   defaults =
-    sticky: true
+    sticky: false
     location: 'top-right'
     animationSpeed: 250
+    offscreenPosition: '-5em'
     classes: []
     closeButtonHtml: '<button class="notification-close">&times;</button>'
 
@@ -34,7 +35,6 @@
       @options = $.extend({}, defaults, options)
       @_defaults = defaults
       @el = $(target)
-      @notice = ''
       @init()
 
     Notifyr::init = ->
@@ -63,18 +63,22 @@
           )
       )
       @el.append @notice
+      opts = @animateOptions('show')
+      offset = if @options.location.match(/left/) then {left: @options.offscreenPosition} else {right: @options.offscreenPosition}
       @notice
         .stop()
-        .animate @animateOptions('show'), @options.animationSpeed, 'easeOutBack', =>
+        .css(offset)
+        .animate opts, @options.animationSpeed, 'easeOutBack', =>
           @el.trigger 'notification-display-complete'
 
     Notifyr::empty = ->
       @el.empty()
 
     Notifyr::remove = ->
+      opts = @animateOptions('hide')
       @notice
         .stop()
-        .animate @animateOptions('hide'), @options.animationSpeed, 'easeInBack', =>
+        .animate opts, @options.animationSpeed, 'easeInBack', =>
           @el.empty()
           @el.trigger 'notification-remove-complete'
 
@@ -83,15 +87,15 @@
       if (state == 'show')
         opts.opacity = 1
         if @options.location.match(/left/)
-          opts.left = '15px'
+          opts.left = @notice.css('left')
         else
-          opts.right = '15px'
+          opts.right = @notice.css('right')
       else
         opts.opacity = 0
         if @options.location.match(/left/)
-          opts.left = '-300px'
+          opts.left = @options.animationSpeed
         else
-          opts.right = '-300px'
+          opts.right = @options.animationSpeed
       opts
 
     Notifyr
