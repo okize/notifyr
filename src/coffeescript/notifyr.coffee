@@ -15,6 +15,7 @@
 
   defaults =
     sticky: false
+    lifespan: 5000
     location: 'top-right'
     animationSpeed: 250
     offscreenPosition: '-5em'
@@ -35,6 +36,7 @@
       @options = $.extend({}, defaults, options)
       @_defaults = defaults
       @el = $(target)
+      @timer = ''
       @init()
 
     Notifyr::init = ->
@@ -70,16 +72,22 @@
         .css(offset)
         .animate opts, @options.animationSpeed, 'easeOutBack', =>
           @el.trigger 'notification-display-complete'
+          unless @options.sticky
+            clearTimeout @timer
+            @timer = setTimeout(=>
+              @remove()
+            , @options.lifespan)
 
     Notifyr::empty = ->
+      clearTimeout @timer
       @el.empty()
 
     Notifyr::remove = ->
+      clearTimeout @timer
       opts = @animateOptions('hide')
       @notice
         .stop()
         .animate opts, @options.animationSpeed, 'easeInBack', =>
-          @el.empty()
           @el.trigger 'notification-remove-complete'
 
     Notifyr::animateOptions = (state) ->
