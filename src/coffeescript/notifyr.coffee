@@ -93,9 +93,9 @@
       else
         opts.opacity = 0
         if @options.location.match(/left/)
-          opts.left = @options.animationSpeed
+          opts.left = @options.offscreenPosition
         else
-          opts.right = @options.animationSpeed
+          opts.right = @options.offscreenPosition
       opts
 
     Notifyr
