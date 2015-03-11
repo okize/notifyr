@@ -16,6 +16,7 @@
   defaults =
     sticky: true
     location: 'top-right'
+    animationSpeed: 250
     classes: []
     closeButtonHtml: '<button class="notification-close">&times;</button>'
 
@@ -65,10 +66,7 @@
       @el.append @notice
       @notice
         .stop()
-        .animate
-          opacity: 1
-          right: '15px'
-        , 250, 'easeOutBack', =>
+        .animate @animateOptions('show'), @options.animationSpeed, 'easeOutBack', =>
           @el.trigger 'notification-display-complete'
 
     Notifyr::empty = ->
@@ -77,12 +75,19 @@
     Notifyr::remove = ->
       @notice
         .stop()
-        .animate
-          opacity: 0
-          right: '-300px'
-        , 250, 'easeInBack', =>
+        .animate @animateOptions('hide'), @options.animationSpeed, 'easeInBack', =>
           @el.empty()
           @el.trigger 'notification-remove-complete'
+
+    Notifyr::animateOptions = (state) ->
+      opts = {}
+      if (state == 'show')
+        opts.opacity = 1
+        opts.right = '15px'
+      else
+        opts.opacity = 0
+        opts.right = '-300px'
+      opts
 
     Notifyr
 
