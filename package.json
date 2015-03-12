@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.1",
   "description": "jquery notification plugin",
-  "main": "./dist/jquery.notifyr.js",
+  "main": "./dist/notifyr.js",
   "directories": {
     "example": "./example"
   },

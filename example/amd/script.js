@@ -2,7 +2,7 @@ require.config({
   baseUrl: '/',
   paths: {
     jquery: 'jquery/dist/jquery.min',
-    notifyr: 'jquery.notifyr'
+    notifyr: 'notifyr'
   }
 });
 

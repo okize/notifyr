@@ -1,5 +1,5 @@
 var $ = require('jquery');
-var notifyr = require('../../dist/jquery.notifyr');
+var notifyr = require('../../dist/notifyr');
 
 $('#notification-1').on('click', function(e) {
   e.preventDefault();
