@@ -6,6 +6,7 @@ connect = require('gulp-connect')
 coffee = require('gulp-coffee')
 rename = require('gulp-rename')
 uglify = require('gulp-uglifyjs')
+minifycss = require('gulp-minify-css')
 sass = require('gulp-sass')
 autoprefixer = require('gulp-autoprefixer')
 header = require('gulp-header')
@@ -22,10 +23,10 @@ sassEntry = './src/sass/styles.sass'
 sassBuildDir = './assets'
 pluginScript = './src/coffeescript/notifyr.coffee'
 pluginBuildDir = './dist'
-pluginName = 'jquery.notifyr.js'
-pluginNameMin = 'jquery.notifyr.min.js'
-pluginCssName = 'jquery.notifyr.css'
-pluginCssNameMin = 'jquery.notifyr.min.css'
+pluginName = 'notifyr.js'
+pluginNameMin = 'notifyr.min.js'
+pluginCssName = 'notifyr.css'
+pluginCssNameMin = 'notifyr.min.css'
 banner = "/*!\n
         #{pak.name} v#{pak.version} (#{pak.homepage})\n
         Copyright (c) #{new Date().getFullYear()} #{pak.author}\n
@@ -116,7 +117,7 @@ gulp.task 'refresh', (callback) ->
   )
   return
 
-gulp.task 'minify', ->
+gulp.task 'minify-js', ->
   gulp
     .src("#{pluginBuildDir}/#{pluginName}")
     .pipe(uglify())
@@ -125,6 +126,16 @@ gulp.task 'minify', ->
     .pipe(size({showFiles: true}))
     .pipe(size({showFiles: true, gzip: true}))
     .pipe(gulp.dest(pluginBuildDir))
+
+gulp.task 'minify-css', ->
+  gulp
+    .src("#{pluginBuildDir}/#{pluginCssName}")
+    .pipe(minifycss())
+    .pipe(rename(pluginCssNameMin))
+    .pipe(size({showFiles: true}))
+    .pipe(size({showFiles: true, gzip: true}))
+    .pipe(gulp.dest(pluginBuildDir))
+    .on 'error', (e) -> log.error e
 
 gulp.task 'watch', ->
   gulp
@@ -143,7 +154,8 @@ gulp.task 'build', (callback) ->
     'compile-js',
     'compile-css',
     'browserify',
-    'minify',
+    'minify-js',
+    'minify-css',
     callback
   )
   return
