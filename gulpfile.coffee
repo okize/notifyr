@@ -8,6 +8,7 @@ rename = require('gulp-rename')
 uglify = require('gulp-uglifyjs')
 minifycss = require('gulp-minify-css')
 sass = require('gulp-sass')
+include = require('gulp-file-include')
 autoprefixer = require('gulp-autoprefixer')
 header = require('gulp-header')
 size = require('gulp-size')
@@ -107,10 +108,19 @@ gulp.task 'compile-dev-css', ->
     }))
     .pipe(gulp.dest(sassBuildDir))
 
+gulp.task 'compile-html', ->
+  gulp
+    .src('./src/html/*.html')
+    .pipe(include(
+      prefix: '@@'
+      basepath: '@file'))
+    .pipe(gulp.dest('./'))
+
 gulp.task 'refresh', (callback) ->
   run(
     'compile-js',
     'compile-dev-css',
+    'compile-html',
     'browserify',
     'html',
     callback
@@ -142,6 +152,7 @@ gulp.task 'watch', ->
     .watch [
       pluginScript
       './src/sass/*'
+      './src/html/*'
       './example/*/*.html'
       './example/*/script.js'
     ], [
