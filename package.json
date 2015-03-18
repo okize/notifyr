@@ -19,6 +19,7 @@
     "gulp-autoprefixer": "*",
     "gulp-coffee": "*",
     "gulp-connect": "*",
+    "gulp-file-include": "*",
     "gulp-header": "*",
     "gulp-minify-css": "*",
     "gulp-rename": "*",
