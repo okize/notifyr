@@ -9,6 +9,7 @@ uglify = require('gulp-uglifyjs')
 minifycss = require('gulp-minify-css')
 sass = require('gulp-sass')
 include = require('gulp-file-include')
+prettify = require('gulp-prettify')
 autoprefixer = require('gulp-autoprefixer')
 header = require('gulp-header')
 size = require('gulp-size')
@@ -114,6 +115,9 @@ gulp.task 'compile-html', ->
     .pipe(include(
       prefix: '@@'
       basepath: '@file'))
+    .pipe(prettify(
+      indent_size: 2
+    ))
     .pipe(gulp.dest('./'))
 
 gulp.task 'refresh', (callback) ->
