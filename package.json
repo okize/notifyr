@@ -22,6 +22,7 @@
     "gulp-file-include": "*",
     "gulp-header": "*",
     "gulp-minify-css": "*",
+    "gulp-prettify": "*",
     "gulp-rename": "*",
     "gulp-sass": "*",
     "gulp-size": "*",
