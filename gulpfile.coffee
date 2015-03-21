@@ -118,6 +118,12 @@ gulp.task 'compile-html', ->
     .pipe(prettify(
       indent_size: 2
     ))
+    .pipe(rename (p) ->
+      p.dirname = "example/#{p.basename}"
+      p.basename = 'index'
+      p.extname = '.html'
+      p
+    )
     .pipe(gulp.dest('./'))
 
 gulp.task 'refresh', (callback) ->
@@ -156,7 +162,7 @@ gulp.task 'watch', ->
     .watch [
       pluginScript
       './src/sass/*'
-      './src/html/*'
+      './src/html/*/*.html'
       './example/*/*.html'
       './example/*/script.js'
     ], [
@@ -168,6 +174,7 @@ gulp.task 'build', (callback) ->
     'clean',
     'compile-js',
     'compile-css',
+    'compile-html',
     'browserify',
     'minify-js',
     'minify-css',
