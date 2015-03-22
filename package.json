@@ -21,6 +21,7 @@
     "gulp-connect": "*",
     "gulp-file-include": "*",
     "gulp-header": "*",
+    "gulp-jsbeautifier": "*",
     "gulp-minify-css": "*",
     "gulp-prettify": "*",
     "gulp-rename": "*",
