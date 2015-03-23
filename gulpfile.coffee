@@ -10,6 +10,7 @@ minifycss = require('gulp-minify-css')
 sass = require('gulp-sass')
 include = require('gulp-file-include')
 prettify = require('gulp-prettify')
+prettifyjs = require('gulp-jsbeautifier')
 autoprefixer = require('gulp-autoprefixer')
 header = require('gulp-header')
 size = require('gulp-size')
@@ -50,7 +51,7 @@ gulp.task 'server', ->
     ]
     port: port
     livereload: true
-  log("Examples can be viewed at http://localhost:#{port}")
+  log("\n\nExamples can be viewed at http://localhost:#{port}\n")
 
 gulp.task 'clean', ->
   gulp
@@ -109,12 +110,28 @@ gulp.task 'compile-dev-css', ->
     }))
     .pipe(gulp.dest(sassBuildDir))
 
+gulp.task 'compile-example-js', ->
+  gulp
+    .src('./src/js/*.js')
+    .pipe(include
+      prefix: '@@'
+      basepath: '@file'
+    )
+    .pipe(rename (p) ->
+      p.dirname = "example/#{p.basename}"
+      p.basename = 'script'
+      p.extname = '.js'
+      p
+    )
+    .pipe(gulp.dest('./'))
+
 gulp.task 'compile-html', ->
   gulp
     .src('./src/html/*.html')
     .pipe(include(
       prefix: '@@'
-      basepath: '@file'))
+      basepath: '@file'
+    ))
     .pipe(prettify(
       indent_size: 2
     ))
@@ -130,6 +147,7 @@ gulp.task 'refresh', (callback) ->
   run(
     'compile-js',
     'compile-dev-css',
+    'compile-example-js',
     'compile-html',
     'browserify',
     'html',
@@ -162,7 +180,8 @@ gulp.task 'watch', ->
     .watch [
       pluginScript
       './src/sass/*'
-      './src/html/*/*.html'
+      './src/js/partials/*.js'
+      './src/html/partials/*.html'
       './example/*/*.html'
       './example/*/script.js'
     ], [
@@ -175,6 +194,7 @@ gulp.task 'build', (callback) ->
     'compile-js',
     'compile-css',
     'compile-html',
+    'compile-example-js',
     'browserify',
     'minify-js',
     'minify-css',
