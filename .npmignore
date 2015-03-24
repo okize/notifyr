@@ -1,5 +1,6 @@
 *.coffee
 gulpfile*
+.jsbeautifyrc
 assets/
 example/
 src/
