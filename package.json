@@ -23,7 +23,6 @@
     "gulp-header": "*",
     "gulp-jsbeautifier": "*",
     "gulp-minify-css": "*",
-    "gulp-prettify": "*",
     "gulp-rename": "*",
     "gulp-sass": "*",
     "gulp-size": "*",

@@ -9,8 +9,7 @@ uglify = require('gulp-uglifyjs')
 minifycss = require('gulp-minify-css')
 sass = require('gulp-sass')
 include = require('gulp-file-include')
-prettify = require('gulp-prettify')
-prettifyjs = require('gulp-jsbeautifier')
+prettify = require('gulp-jsbeautifier')
 autoprefixer = require('gulp-autoprefixer')
 header = require('gulp-header')
 size = require('gulp-size')
@@ -22,6 +21,21 @@ clean = require('del')
 # config
 pak = JSON.parse(fs.readFileSync './package.json', 'utf8')
 port = 1111
+prettifyConfig =
+  html:
+    braceStyle: "collapse",
+    indentChar: " ",
+    indentScripts: "keep",
+    indentSize: 4,
+    maxPreserveNewlines: 10,
+    preserveNewlines: true,
+    unformatted: ["a", "sub", "sup", "b", "i", "u"],
+    wrapLineLength: 0
+  js:
+    indentChar: ' ',
+    indentLevel: 0,
+    indentSize: 2,
+    indentWithTabs: false
 sassEntry = './src/sass/styles.sass'
 sassBuildDir = './assets'
 pluginScript = './src/coffeescript/notifyr.coffee'
@@ -117,6 +131,7 @@ gulp.task 'compile-example-js', ->
       prefix: '@@'
       basepath: '@file'
     )
+    .pipe(prettify(prettifyConfig))
     .pipe(rename (p) ->
       p.dirname = "example/#{p.basename}"
       p.basename = 'script'
@@ -132,9 +147,7 @@ gulp.task 'compile-html', ->
       prefix: '@@'
       basepath: '@file'
     ))
-    .pipe(prettify(
-      indent_size: 2
-    ))
+    .pipe(prettify(prettifyConfig))
     .pipe(rename (p) ->
       p.dirname = "example/#{p.basename}"
       p.basename = 'index'
