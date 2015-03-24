@@ -21,21 +21,7 @@ clean = require('del')
 # config
 pak = JSON.parse(fs.readFileSync './package.json', 'utf8')
 port = 1111
-prettifyConfig =
-  html:
-    braceStyle: "collapse",
-    indentChar: " ",
-    indentScripts: "keep",
-    indentSize: 4,
-    maxPreserveNewlines: 10,
-    preserveNewlines: true,
-    unformatted: ["a", "sub", "sup", "b", "i", "u"],
-    wrapLineLength: 0
-  js:
-    indentChar: ' ',
-    indentLevel: 0,
-    indentSize: 2,
-    indentWithTabs: false
+prettifyConfig = config: '.jsbeautifyrc'
 sassEntry = './src/sass/styles.sass'
 sassBuildDir = './assets'
 pluginScript = './src/coffeescript/notifyr.coffee'
@@ -106,6 +92,11 @@ gulp.task 'compile-css', ->
       errLogToConsole: false
       onError: (e) -> log e.message
     }))
+    .pipe(autoprefixer({
+      browsers: ['last 3 versions', 'Firefox >= 26', 'Explorer >= 8']
+      cascade: false
+    }))
+    .pipe(prettify(prettifyConfig))
     .pipe(rename(pluginCssName))
     .pipe(gulp.dest(pluginBuildDir))
 
@@ -118,10 +109,7 @@ gulp.task 'compile-dev-css', ->
       errLogToConsole: false
       onError: (e) -> log e.message
     }))
-    .pipe(autoprefixer({
-      browsers: ['last 3 versions', 'Firefox >= 26', 'Explorer >= 8']
-      cascade: false
-    }))
+    .pipe(prettify(prettifyConfig))
     .pipe(gulp.dest(sassBuildDir))
 
 gulp.task 'compile-example-js', ->
