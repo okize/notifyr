@@ -9,5 +9,4 @@ require.config({
 define(['jquery', 'notifyr'], function ($, notifyr) {
 
   @@include('./partials/script.js')
-
 });

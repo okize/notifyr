@@ -10,7 +10,7 @@ $('#notification-1').on('click', function(e) {
   });
   $('#notifications').on( 'notification-remove-complete', function() {
     alert('Notification remove complete');
-    $('#notifications').off( 'notification-remove-complete');
+    $('#notifications').off('notification-remove-complete');
   });
 });
 
