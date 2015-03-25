@@ -6,7 +6,7 @@ require.config({
   }
 });
 
-define(['jquery', 'notifyr'], function ($, notifyr) {
+define(['jquery', 'notifyr'], function($, notifyr) {
 
   $('#notification-1').on('click', function(e) {
     e.preventDefault();
@@ -18,9 +18,9 @@ define(['jquery', 'notifyr'], function ($, notifyr) {
       alert('Notification display complete');
       $('#notifications').off('notification-display-complete');
     });
-    $('#notifications').on( 'notification-remove-complete', function() {
+    $('#notifications').on('notification-remove-complete', function() {
       alert('Notification remove complete');
-      $('#notifications').off( 'notification-remove-complete');
+      $('#notifications').off('notification-remove-complete');
     });
   });
 

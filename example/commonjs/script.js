@@ -11,9 +11,9 @@ $('#notification-1').on('click', function(e) {
     alert('Notification display complete');
     $('#notifications').off('notification-display-complete');
   });
-  $('#notifications').on( 'notification-remove-complete', function() {
+  $('#notifications').on('notification-remove-complete', function() {
     alert('Notification remove complete');
-    $('#notifications').off( 'notification-remove-complete');
+    $('#notifications').off('notification-remove-complete');
   });
 });
 

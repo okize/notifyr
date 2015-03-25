@@ -12,9 +12,9 @@ $(document).on('ready', function() {
       alert('Notification display complete');
       $('#notifications').off('notification-display-complete');
     });
-    $('#notifications').on( 'notification-remove-complete', function() {
+    $('#notifications').on('notification-remove-complete', function() {
       alert('Notification remove complete');
-      $('#notifications').off( 'notification-remove-complete');
+      $('#notifications').off('notification-remove-complete');
     });
   });
 
